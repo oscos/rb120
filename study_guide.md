@@ -23,23 +23,21 @@
 
 # # Fake operators and equality
 
-# # Truthiness
+## Truthiness
 
-# # Working with collaborator objects
-
-
+## Working with collaborator objects
 
 
-### Classes and objects
-- Classes is where you define the attribute and behaviors for objects.  A class is like an abstract blueprint from which you create concrete objects from.
+
+
+## Classes and objects
+- Classes is where you define the attribute and behaviors for objects.  Its where you define what an object is made of and what it can do.  A class is like an abstract blueprint from which you create concrete objects from.  
+
 - Objects are instances of classes and represent real world nouns.   Anything that can be said to have a value is an object in ruby. 
    !IMPORTANT: You return an object by calling the class method new on a class. You instatiate an object called X from class Y 
-   While the attributes have been defined, its not until you instatiate an object from this class that you assign a value to those attributes.
+   While the attributes are defined in classes, its not until you instatiate an object from a class that you assign a value to those attributes. Individual objects will contain different information from other objects, yet they are instances of the same class.
 
-* Mental Model: You can think of a class as an abstract blueprint from which you create concrete and specific objects from.  Individual objects may contain different information from other objects yet be instances of the same clase.
-While the attributes hare defined in a class, its not until you instatiate an object from this class that you assign a value to those attributes.
-
->  Classes encapsulate methods.  Objects encapsulate attributes.
+>  Classes encapsulate methods.  Objects encapsulate attributes. All Attributes (instance methods and the values) comprise the state of an object.
 
 Example:
 Let's say we have a car class where you define the attributes model, color, and year. 
@@ -56,6 +54,22 @@ Let's say we have a car class where you define the attributes model, color, and 
    p my_car
 ```
 
+## Class and Objects
+
+#### Classes
+* A class in Ruby is like a blueprint where you define the attributes and behaviors for objects.  Its where you define what an object is made of and what it can do.  
+* Classes encapsulate methods. Since methods are part of the class, they are inherited by the subclasses of the superclass. In Ruby a subclass can only inherit from one superclass, however you can include additional additional methods in any class via module mixins.
+    
+#### Objects
+* Objects are created from classes. When you instantiate an object from a class you create an instance of that class.  Anything that can be said to hold a value is an object in ruby.  Objects represent real world nouns.  
+
+* Objects encapsulate state which is the collection of all instance variables and their values. Since state is part of the object it is not inherited.  The state of any two objects will be different even if they are instantiated from the same class.
+
+  [Attributes vs State](https://launchschool.com/posts/c279b82b)
+  [Attributes, States, and Behaviors Identification](https://launchschool.com/posts/2de34d40)
+  [What are Objects?](https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects)
+  
+  
 
 # # How to call setters and getters?
 
