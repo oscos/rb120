@@ -39,7 +39,8 @@ end
 class Stocker
 end
 
-# notice the different order of the modules below
+# notice the different order of the method lookup path below, 
+# specifically the order in which the modules are called
 p Cashier.ancestors # => [Cashier, Assistable, Greetable, Object, Kernel, BasicObject]
 p Bagger.ancestors  # => [Bagger, Greetable, Assistable, Object, Kernel, BasicObject]
 ```
