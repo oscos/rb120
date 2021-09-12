@@ -4,6 +4,8 @@ The method lookup path is the order in which classes are inspected whenever a me
 
 When mixing in modules into a class, the order in which the modules are added is important.  This is because if the invoked method is not found within the object's class, Ruby will then search the modules beginning with the last module that was mixed into the class and work its way up to the first module.  Ruby will continue to look for the method within the superclasses and any mixed in modules.  This process continues in an ordered linear fashion until either the method is found or there a no more places to look. At which point Ruby will raise the "No method found" error.
 
+It's important to note that objects of a class will have access to the instance methods defined in a class, parents of the class and any mixed in modules.
+
 **Example order of execution for method lookup path.
 ```ruby
 module Greetable
@@ -37,6 +39,7 @@ end
 class Stocker
 end
 
-p Cashier.ancestors
-p Bagger.ancestors
+# notice the different order of the modules below
+p Cashier.ancestors # => [Cashier, Assistable, Greetable, Object, Kernel, BasicObject]
+p Bagger.ancestors  # => [Bagger, Greetable, Assistable, Object, Kernel, BasicObject]
 ```
