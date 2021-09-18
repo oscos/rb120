@@ -58,11 +58,11 @@ electrician.shutoff_power
 **module methods**
 ```ruby
 module ServiceProvider
-  def self.some_out_of_place_method
-    puts "I'm out of place"
+  def self.synchronize
+    puts "Some out of place method"
   end
 end
 
-ServiceProvider.some_out_of_place_method
-ServiceProvider::some_out_of_place_method
+ServiceProvider.synchronize
+ServiceProvider::synchronize
 ```
