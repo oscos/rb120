@@ -56,7 +56,7 @@ electrician.shutoff_power
 ```
 
 **module methods**
-```
+```ruby
 module ServiceProvider
   def self.some_out_of_place_method
     puts "I'm out of place"
