@@ -3,11 +3,10 @@
 
 <br />
 
-### Problems To Revise:
+### TODO:
 | Exercise | Description |
 | --- | ----------- |
 | #3 | Revise the `why?` responses. |
-| #6 | Incomplete. `name = name.upcase` |
 
 
 ## Ex #1
