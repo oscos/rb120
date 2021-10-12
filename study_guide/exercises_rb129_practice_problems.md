@@ -166,11 +166,11 @@ some_animal_classes = mammals + birds
 p some_animal_classes 
 ```
 
-This code outputs an array `Animal` objects and is not what we would expect when using the `AnimalClass#+`.
+This code outputs an array `Animal` objects which is not what we would expect when using the `AnimalClass#+`.
 
-This is because whenever we are adding two objects together, we expect the evaluated statement to return an object of the same class.  For example, when adding two `Number` objects, 2 and 4, we expect the evaluated statement to return a `Number` object.  Similarly if we add two `String` objects, "Hello" and "World", we expect the evaluated statement to return a `String` object. Since in this case we are adding two `AnimalClass` objects, we expect the evaluated statement to return an `AnimalClass` object but instead it returns and outputs an `Array` object.
+When we add two objects together, we expect the evaluated statement to return an object of the same class.  For example, when adding two `Number` objects, 2 and 4, we expect the evaluated statement to return a `Number` object.  Similarly if we add two `String` objects, "Hello" and "World", we expect the evaluated statement to return a `String` object. Since in this case we are adding two `AnimalClass` objects, we expect the evaluated statement to return an `AnimalClass` object but instead it returns and outputs an `Array` object.
 
-We can modify the `AnimalClass#+` method to be more inline with what we expect by adding a `my_animals` local variable that references an instantiated AnimalClass object.  We can then invoke the `AnimalsClass#animals` method to set the `@animals` instance variable to the return value of `animals + other_class.animals`. Finally can define the `my_animals` local variable as the last line in the `AnimalClass#+` method which will be it's return value when invoked.
+We can modify the `AnimalClass#+` method so that the return value is more in line with what we expect by adding a `my_animals` local variable that references an instantiated AnimalClass object.  We can then invoke the `AnimalsClass#animals` method to set the `@animals` instance variable to the return value of `animals + other_class.animals`. Finally can define the `my_animals` local variable as the last line in the `AnimalClass#+` method which will be it's return value when invoked.
 
 Code modified from:
 ```ruby
