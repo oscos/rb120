@@ -297,3 +297,46 @@ def change_name
   self.name = name.upcase
 end
 ```
+
+<br />
+<hr />
+
+## Ex #7
+What does the code below output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
+
+```ruby
+class Vehicle
+  @@wheels = 4
+
+  def self.wheels
+    @@wheels
+  end
+end
+
+p Vehicle.wheels                             
+
+class Motorcycle < Vehicle
+  @@wheels = 2
+end
+
+p Motorcycle.wheels                           
+p Vehicle.wheels                              
+
+class Car < Vehicle; end
+
+p Vehicle.wheels
+p Motorcycle.wheels                           
+p Car.wheels  
+```
+
+This code demonstrates that in the context of inheritance, class variables can behave in unexpected and even dangerous ways. This is because when a class variable is defined within a class, there is only one copy of that class variable across all sub-classes and all instances of the classes in the inheritance chain. This means that if we override a class variable from within a sub-class, it will affect the class variable in the super class and all other sub-classes further down the inheritance chain.
+
+On `line 9`, we invoke the `wheels` class method on a `Vehicle` class which outputs `4`. This is because within `Vehicle` on `line 2`, the `@@wheels` class variable has been initialized to `4`.
+
+On `line 15`, we invoke the `wheels` class method on a `Motorcycle` sub-class that inherits from `Vehicle` which outputs `2`. This is because within `Motorcycle` on `line 12`, we override the `@@wheels` class variable and set its value to `2`. 
+
+This affects the `@@wheels` class variable in the `Vehicle` super class and all other sub-classes further down the inheritance chain.  
+
+This is why when on `lines 16, and 20` we invoke the `wheels` class method on the `Vehicle` super class , the output is `2`. 
+
+It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`. 
