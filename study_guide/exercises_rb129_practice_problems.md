@@ -3,10 +3,11 @@
 
 <br />
 
-### TODO:
+### Problems To Revise:
 | Exercise | Description |
 | --- | ----------- |
 | #3 | Revise the `why?` responses. |
+| #6 | Incomplete. `name = name.upcase` |
 
 
 ## Ex #1
@@ -62,7 +63,7 @@ This code demonstrates a distinction between referencing local variables and ins
 
 On `line 15`, we invoke the `::new` class method on a `Dog` class which returns and object that's assigned to the local variable `teddy`.
 
-On `line 16` we invoke the `swim` instance method the object referenced by `teddy`, which returns `nil` and outputs `nil`. 
+On `line 16` we invoke the `swim` instance method on the object referenced by `teddy`, which returns `nil` and outputs `nil`. 
 
 This is because the `enable_swimming` instance method that initializes the `@can_swim` instance variable is never invoked and `@can_swim` is not initialized.
 
@@ -339,4 +340,4 @@ This affects the `@@wheels` class variable in the `Vehicle` super class and all 
 
 This is why when on `lines 16, and 20` we invoke the `wheels` class method on the `Vehicle` super class , the output is `2`. 
 
-It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`. 
+It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`.
