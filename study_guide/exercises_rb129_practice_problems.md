@@ -28,7 +28,7 @@ p bob.name
 
 This code demonstrates a distinction between referencing local variables and instance variables. While referencing an uninitialized local variable raises a `NameError` error, referencing an uninitialized instance variable returns `nil`.
 
-On `line 9`, we invoke the `::new` class method on a `Person` class which returns and object that's assigned to the local variable `bob`.
+On `line 9`, we invoke the `::new` class method on a `Person` class which returns an object that's assigned to the local variable `bob`.
 
 On `line 10`, we invoke the `name` instance method on the object referenced by `bob` which returns `nil` and outputs `nil`.
 
@@ -61,7 +61,7 @@ p teddy.swim
 
 This code demonstrates a distinction between referencing local variables and instance variables. Referencing an uninitialized instance variable returns `nil`. However referencing an uninitialized local variable raises a `NameError` error instead.
 
-On `line 15`, we invoke the `::new` class method on a `Dog` class which returns and object that's assigned to the local variable `teddy`.
+On `line 15`, we invoke the `::new` class method on a `Dog` class which returns an object that's assigned to the local variable `teddy`.
 
 On `line 16` we invoke the `swim` instance method on the object referenced by `teddy`, which returns `nil` and outputs `nil`. 
 
@@ -167,11 +167,11 @@ some_animal_classes = mammals + birds
 p some_animal_classes 
 ```
 
-This code outputs an array `Animal` objects which is not what we would expect when using the `AnimalClass#+`.
+This code outputs an array of `Animal` objects which is not what we would expect when using the `AnimalClass#+`.
 
-When we add two objects together, we expect the evaluated statement to return an object of the same class.  For example, when adding two `Number` objects, 2 and 4, we expect the evaluated statement to return a `Number` object.  Similarly if we add two `String` objects, "Hello" and "World", we expect the evaluated statement to return a `String` object. Since in this case we are adding two `AnimalClass` objects, we expect the evaluated statement to return an `AnimalClass` object but instead it returns and outputs an `Array` object.
+When we add two objects together, we expect the evaluated statement to return an object of the same class.  For example, when adding two `Number` objects, `2` and `4`, we expect the evaluated statement to return a `Number` object.  Similarly if we add two `String` objects, `"Hello"` and `"World"`, we expect the evaluated statement to return a `String` object. Since in this case we are adding two `AnimalClass` objects, we expect the evaluated statement to return an `AnimalClass` object but instead it returns and outputs an `Array` object.
 
-We can modify the `AnimalClass#+` method so that the return value is more in line with what we expect by adding a `my_animals` local variable that references an instantiated AnimalClass object.  We can then invoke the `AnimalsClass#animals` method to set the `@animals` instance variable to the return value of `animals + other_class.animals`. Finally can define the `my_animals` local variable as the last line in the `AnimalClass#+` method which will be it's return value when invoked.
+We can modify the `AnimalClass#+` method so that the return value is more in line with what we expect by adding a `my_animals` local variable that references an instantiated `AnimalClass` object.  We can then invoke the `AnimalsClass#animals` method to set the `@animals` instance variable to the return value of `animals + other_class.animals`. Finally we can define the `my_animals` local variable as the last line in the `AnimalClass#+` method which will be it's return value when invoked.
 
 Code modified from:
 ```ruby
