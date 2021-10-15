@@ -11,8 +11,6 @@
 
 
 ## Ex #1
-What is output and why? What does this demonstrate about instance variables that differentiates them from local variables?
-
 ```ruby
 class Person
   attr_reader :name
@@ -25,6 +23,7 @@ end
 bob = Person.new
 p bob.name
 ``` 
+> What is output and why? What does this demonstrate about instance variables that differentiates them from local variables?
 
 This code demonstrates a distinction between referencing local variables and instance variables. While referencing an uninitialized local variable raises a `NameError` error, referencing an uninitialized instance variable returns `nil`.
 
@@ -38,8 +37,6 @@ To initialize an instance variable, we must first call the method that initializ
 <hr />
 
 ## Ex #2
-What is output and why? What does this demonstrate about instance variables?
-
 ```ruby
 module Swim
   def enable_swimming
@@ -58,6 +55,7 @@ end
 teddy = Dog.new
 p teddy.swim
 ```
+> What is output and why? What does this demonstrate about instance variables?
 
 This code demonstrates a distinction between referencing local variables and instance variables. Referencing an uninitialized instance variable returns `nil`. However referencing an uninitialized local variable raises a `NameError` error instead.
 
@@ -73,9 +71,6 @@ Since uninitialized instance variables return `nil`, `@can_swim` returns `nil` w
 <hr />
 
 ## Ex #3
-
-What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above
-
 ```ruby
 module Describable
   def describe_shape
@@ -105,6 +100,7 @@ p Square.sides  # Square < Quadrilateral (Constant) < Shape ()
 p Square.new.sides 
 p Square.new.describe_shape 
 ```
+> What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above
 
 This code demonstrates that constants have lexical scope. It also demonstrates that a constant initialized in a superclass is inherited by the subclass, and can be accessed by both class methods and instance methods.
 
@@ -125,7 +121,6 @@ On `line 27`, we invoke the `describe_shape` instance method on a `Square` objec
 <hr />
 
 ## Ex #4
-What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
 ```ruby
 class AnimalClass
   attr_accessor :name, :animals
@@ -166,6 +161,7 @@ some_animal_classes = mammals + birds
 
 p some_animal_classes 
 ```
+> What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
 
 This code outputs an array of `Animal` objects which is not what we would expect when using the `AnimalClass#+`.
 
@@ -193,8 +189,6 @@ end
 <hr />
 
 ## Ex #5
-We expect the code below to output `”Spartacus weighs 45 lbs and is 24 inches tall.”` Why does our `change_info` method not work as expected?
-
 ```ruby
 class GoodDog
   attr_accessor :name, :height, :weight
@@ -221,6 +215,7 @@ sparky.change_info('Spartacus', '24 inches', '45 lbs')
 puts sparky.info 
 # => Spartacus weighs 10 lbs and is 12 inches tall.
 ```
+> We expect the code above to output `"Spartacus weighs 45 lbs and is 24 inches tall."  Why does our `change_info` method not work as expected?
 
 This code demonstrates that `setter` methods must be prepended with `self` to help Ruby disambiguate between invoking a `setter` method and initializing a local variable.
 
@@ -252,8 +247,6 @@ end
 <hr />
 
 ## Ex #6
-In the code below, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
-
 ```ruby
 class Person
   attr_accessor :name
@@ -272,6 +265,7 @@ p bob.name
 bob.change_name
 p bob.name
 ```
+> In the code above, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
 
 This code demonstrates that `setter` methods must be prepended with `self` to help Ruby disambiguate between invoking a `setter` method and initializing a local variable.
 
@@ -303,8 +297,6 @@ end
 <hr />
 
 ## Ex #7
-What does the code below output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
-
 ```ruby
 class Vehicle
   @@wheels = 4
@@ -329,6 +321,7 @@ p Vehicle.wheels
 p Motorcycle.wheels                           
 p Car.wheels  
 ```
+> What does this code output, and why? What does this demonstrate about class variables, and why we should avoid using class variables when working with inheritance?
 
 This code demonstrates that in the context of inheritance, class variables can behave in unexpected and even dangerous ways. This is because when a class variable is defined within a class, there is only one copy of that class variable across all sub-classes and all instances of the classes in the inheritance chain. This means that if we override a class variable from within a sub-class, it will affect the class variable in the super class and all other sub-classes further down the inheritance chain.
 
@@ -340,4 +333,63 @@ This affects the `@@wheels` class variable in the `Vehicle` super class and all 
 
 This is why when on `lines 16, and 20` we invoke the `wheels` class method on the `Vehicle` super class , the output is `2`. 
 
-It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`.
+It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`. 
+
+
+<br />
+<hr />
+
+## Ex #8
+```ruby
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+class GoodDog < Animal
+  def initialize(color)
+    super # @name = "brown"
+    @color = color
+  end
+end
+
+bruno = GoodDog.new("brown")       
+p bruno
+```
+> What is output and why? What does this demonstrate about `super`?
+
+This code demonstrates how calling `super` with no explicit arguments works.  `super` is a keyword that invokes a method earlier on in the method lookup path that has the same name as the method it is called from.  When `super` is called with no explicit arguments (no parentheses), it passes along any arguments passed to the method in which it is called, over to the method with the same name in the superclass .
+
+In this example we define a `Animal` class with an initialize method that takes in a `name` argument.  We then define a `GoodDog` class that is a subclass to `Animal` and which also has an `initialize` method that takes a `color` argument. The `initialize` method in `GoodDog` overrides the`initialize` method that it inhertis from `Animal`.
+    
+However, within the initialize method in the `GoodDog` subclass, `super` is called with no arguments.  `super` passes along the String `brown` referenced by the `color` argument over to the `initialize` method in `Animal` superclass and invokes it. This initializes the `@name` instance variable wtihin the `initialize` method in the `Animal` superclass to the String `brown.` This explains the presence of `@name="brown"` when the `GoodDog` object is instantiated.  The `initialize` method within `GoodDog` subclass proceeds to initialize the `@color` instance variable to the String `brown`.  Thus when we output the `bruno` object, both `@name` and `@color` instance variables are set to `brown`.
+
+<br />
+<hr />
+
+## Ex #9
+```ruby
+class Animal
+  def initialize
+  end
+end
+
+class Bear < Animal
+  def initialize(color)
+    super
+    @color = color
+  end
+end
+
+bear = Bear.new("black")        
+```
+> What is output and why? What does this demonstrate about `super`? 
+
+This code demonstrates how calling `super` with no explicit arguments works.  `super` is a keyword that invokes a method earlier on in the method lookup path that has the same name as the method it is called from.  When `super` is called with no explicit arguments (no parentheses), it passes along any arguments passed to the method in which it is called, over to the method with the same name in the superclass .
+  
+In this example we define an `Animal` class with an `initialize` method that accepts no arguments.  We also define a `Bear` class that is a subclass to `Animal` that accepts one argument.  The `initialize` method in the `Bear` subclass overrides the `initialize` method that is inherited from the the `Animal` superclass. 
+  
+However within the `initialize` method of the `Bear` subclass, we call `super` with no argument. `super` passes along the String `black` referenced by the `color` argument from the `initialize` method within the `Bear` subclass over to the `initialize` method in `Animal` superclass and invokes it. Thus when we instantiate a new object on `line 46`, it raises and `ArgumentError` error because we try to pass an argument to the `initialize` method of the `Animal` class which does not accept and arguments.
