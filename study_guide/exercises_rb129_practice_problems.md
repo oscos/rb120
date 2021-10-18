@@ -7,7 +7,7 @@
 | Exercise | Description |
 | --- | ----------- |
 | #3 | Revise the `why?` responses. |
-| #6 | Incomplete. `name = name.upcase` |
+| #10 | Incomplete. Unsure how to reference a class within a module. |
 
 
 ## Ex #1
@@ -335,7 +335,6 @@ This is why when on `lines 16, and 20` we invoke the `wheels` class method on th
 
 It's also why when on `line 22` we invoke the `wheels` class method on the `Car` sub-class, the output is `2`. 
 
-
 <br />
 <hr />
 
@@ -363,7 +362,7 @@ p bruno
 
 This code demonstrates how calling `super` with no explicit arguments works.  `super` is a keyword that invokes a method earlier on in the method lookup path that has the same name as the method it is called from.  When `super` is called with no explicit arguments (no parentheses), it passes along any arguments passed to the method in which it is called, over to the method with the same name in the superclass .
 
-In this example we define a `Animal` class with an initialize method that takes in a `name` argument.  We then define a `GoodDog` class that is a subclass to `Animal` and which also has an `initialize` method that takes a `color` argument. The `initialize` method in `GoodDog` overrides the`initialize` method that it inhertis from `Animal`.
+In this example we define a `Animal` class with an initialize method that takes in a `name` argument.  We then define a `GoodDog` class that is a subclass to `Animal` and which also has an `initialize` method that takes a `color` argument. The `initialize` method in `GoodDog` overrides the`initialize` method that it inherits from `Animal`.
     
 However, within the initialize method in the `GoodDog` subclass, `super` is called with no arguments.  `super` passes along the String `brown` referenced by the `color` argument over to the `initialize` method in `Animal` superclass and invokes it. This initializes the `@name` instance variable wtihin the `initialize` method in the `Animal` superclass to the String `brown.` This explains the presence of `@name="brown"` when the `GoodDog` object is instantiated.  The `initialize` method within `GoodDog` subclass proceeds to initialize the `@color` instance variable to the String `brown`.  Thus when we output the `bruno` object, both `@name` and `@color` instance variables are set to `brown`.
 
@@ -392,4 +391,187 @@ This code demonstrates how calling `super` with no explicit arguments works.  `s
   
 In this example we define an `Animal` class with an `initialize` method that accepts no arguments.  We also define a `Bear` class that is a subclass to `Animal` that accepts one argument.  The `initialize` method in the `Bear` subclass overrides the `initialize` method that is inherited from the the `Animal` superclass. 
   
-However within the `initialize` method of the `Bear` subclass, we call `super` with no argument. `super` passes along the String `black` referenced by the `color` argument from the `initialize` method within the `Bear` subclass over to the `initialize` method in `Animal` superclass and invokes it. Thus when we instantiate a new object on `line 46`, it raises and `ArgumentError` error because we try to pass an argument to the `initialize` method of the `Animal` class which does not accept and arguments.
+However within the `initialize` method of the `Bear` subclass, we call `super` with no argument. `super` passes along the String `black` referenced by the `color` argument from the `initialize` method within the `Bear` subclass over to the `initialize` method in `Animal` superclass and invokes it. Thus when we instantiate a new object on `line 46`, it raises and `ArgumentError` error because we try to pass an argument to the `initialize` method of the `Animal` class which does not accept and arguments. 
+
+<br />
+<hr />
+
+## Ex #10
+```ruby
+module Walkable
+  def walk
+    "I'm walking."
+  end
+end
+
+module Swimmable
+  def swim
+    "I'm swimming."
+  end
+end
+
+module Climbable
+  def climb
+    "I'm climbing."
+  end
+end
+
+module Danceable
+  def dance
+    "I'm dancing."
+  end
+end
+
+class Animal
+  include Walkable
+
+  def speak
+    "I'm an animal, and I speak!"
+  end
+end
+
+module GoodAnimals
+  include Climbable
+
+  class GoodDog < Animal
+    include Swimmable
+    include Danceable
+  end
+  
+  class GoodCat < Animal; end
+end
+
+good_dog = GoodAnimals::GoodDog.new
+p good_dog.walk
+```
+> What is the method lookup path used when invoking `#walk` on `good_dog`?
+
+within the Animal namespace From Natalie
+
+This code demonstrates how Ruby traverses through the method lookup path whenever a method is invoked.  The method lookup path is the distinct path that ruby follows whenever a method is invoked.
+
+This code demonstrates the distinct path that ruby follows when 
+
+This code demonstrates how Ruby traverses through the method lookup path which is the distinct path that Ruby follows whenever a method is invoked.
+
+In this example, we are using a module for namespacing where we group related classes together within a `GoodAnimals` module.  
+
+<br />
+<hr />
+
+## Ex #11
+```ruby
+class Animal
+  def eat
+    puts "I eat."
+  end
+end
+
+class Fish < Animal
+  def eat
+    puts "I eat plankton."
+  end
+end
+
+class Dog < Animal
+  def eat
+     puts "I eat kibble."
+  end
+end
+
+def feed_animal(animal)
+  animal.eat
+end
+
+array_of_animals = [Animal.new, Fish.new, Dog.new]
+array_of_animals.each do |animal|
+  feed_animal(animal)
+end
+```
+> What is output and why? How does this code demonstrate polymorphism? 
+
+This code outputs, `"I eat"`, `"I eat plankton."`, and `"I eat kibble."` 
+
+This is an example of polymporhism through inheritance in which objects of different types can respond to the same method invocation simply by overriding a method from the superclass.
+
+In this example we define a `Animal` class with a `eat` method.  We also define a `Fish` class and `Dog` class that both subclass from `Animal` where they override the `eat` method that they inherit, and implement their own specialized verson of this method. 
+
+Even though every object in the `array_of_animals` array is a different object type, each with their own implementation of the `eat` method, the client code only cares that the objects can respond to the same `eat` method invocation.
+
+<br />
+<hr />
+
+## Ex #12
+```ruby
+class Person
+  attr_accessor :name, :pets
+
+  def initialize(name)
+    @name = name
+    @pets = []
+  end
+end
+
+class Pet
+  def jump
+    puts "I'm jumping!"
+  end
+end
+
+class Cat < Pet; end
+
+class Bulldog < Pet; end
+
+bob = Person.new("Robert")
+
+kitty = Cat.new
+bud = Bulldog.new
+
+bob.pets << kitty
+bob.pets << bud                     
+
+bob.pets.jump 
+```
+> We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object?
+
+This code raises an error because on `line 28`, `pets` references an array containing the collaborator objects referenced by `kitty` and `bud`, and since the `Array` class does not have a `jump` method, Ruby raises an error.  
+
+To avoid the error, we can iterate through the `pets` array and invoke the `jump` method on both the `kitty` and `bud` objects instead.
+
+code modified to:
+```ruby
+  bob.pets.each do |pet|
+    pet.jump
+  end
+```
+
+<br />
+<hr />
+
+## Ex #13
+```ruby
+class Animal
+  def initialize(name)
+    @name = name
+  end
+end
+
+class Dog < Animal
+  def initialize(name); end
+
+  def dog_name
+    "bark! bark! #{@name} bark! bark!"
+  end
+end
+
+teddy = Dog.new("Teddy")
+puts teddy.dog_name   
+```
+> What is output and why?
+
+This code raises and error. 
+
+
+In this example we define an `Animal` class with an initialize method that takes one `name` argument that assigned to the `@name` instance variable.  We also define a `Dog` class that is a subclass to the `Animal` superclass.  `Dog` class inherits the `intialize` method from `Animal` and overrides it.  However the value of the `name` argument within the `Dog#initialize` method is never assigned to an `@name` instance variable.  Hence when on `line 11`, we reference the `@name` instance variable within the `dog_name` method, `@name` is uninitialized and returns `nil`. 
+
+When we invoke the `dog_name` on the `Dog` object referenced by `teddy`, we output `"bark! bark!  bark! bark!"` since @name evaluates to `nil`.
