@@ -8,7 +8,17 @@
 | --- | ----------- |
 | #3 | Revise the `why?` responses. |
 | #10 | Incomplete. Unsure how to reference a class within a module. |
+| #13 | Incomplete. question on nil string interpolation - nil.to_s. |
+| #16 | See Pete's response.  |
+| #18 | Review for accuracy.  |
 
+### Completed Problems:
+| Exercise | Description |
+| --- | ----------- |
+| [Excercise 22](#ex22) |
+
+<br />
+<hr />
 
 ## Ex #1
 ```ruby
@@ -569,9 +579,366 @@ puts teddy.dog_name
 ```
 > What is output and why?
 
-This code raises and error. 
-
 
 In this example we define an `Animal` class with an initialize method that takes one `name` argument that assigned to the `@name` instance variable.  We also define a `Dog` class that is a subclass to the `Animal` superclass.  `Dog` class inherits the `intialize` method from `Animal` and overrides it.  However the value of the `name` argument within the `Dog#initialize` method is never assigned to an `@name` instance variable.  Hence when on `line 11`, we reference the `@name` instance variable within the `dog_name` method, `@name` is uninitialized and returns `nil`. 
 
-When we invoke the `dog_name` on the `Dog` object referenced by `teddy`, we output `"bark! bark!  bark! bark!"` since @name evaluates to `nil`.
+This is why on line When we invoke the `dog_name` on the `Dog` object referenced by `teddy`, we output `"bark! bark!  bark! bark!"` since @name evaluates to `nil`.
+
+<br />
+<hr />
+
+## Ex #14
+```ruby
+class Person
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+al = Person.new('Alexander')
+alex = Person.new('Alexander')
+p al == alex # => true
+```
+> In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
+
+In this example rather than compare the `state` of the objects we are comparing the objects themselves. For `line 11` to evaluate to `true`, we can define a custom `==` comparison operator within `Person`, that compares the values that `@name` instance variable references.
+  
+code added:
+```ruby
+  def ==(other)
+    name == other.name
+  end
+```
+
+> Further, since `al.name == alex.name` returns `true`, does this mean the `String` objects referenced by `al` and `alex`'s `@name` instance variables are the same object? How could we prove our case?
+
+The are not the same object. We can prove this by invoking the `object_id` on the return value of `al.name` and `alex.name`
+
+code modified:
+```ruby
+p al.name.object_id 
+p alex.name.object_id 
+```
+
+<br />
+<hr />
+
+## Ex #15
+```ruby
+class Person
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def to_s
+    "My name is #{name.upcase!}."
+  end
+end
+
+bob = Person.new('Bob')
+puts bob.name 
+puts bob      
+puts bob.name 
+```
+>What is output on `lines 14, 15, and 16` and why?
+
+On `line 13` we invoke the `::new` class method on `Person` class which instantiates a new `Person` object and passes the string `Bob` as an argument to the initialize method, where it's used to initialize the `@name` instance variable. This new object is assigned to the local variable `bob`.
+
+On `line 14`, we invoke the `name` instance method on the object referenced by `bob` which outputs `Bob`. This works because on `line 2`, the `attr_reader :name` automatically created the `name` getter method.
+
+On `line 15`, the `bob` object is passed as an argument to the `puts` method invocation which ouputs `"My name is BOB"`. This is because within the `Person` class, we have defined a custom `to_s` method that is invoked whenever we call `puts` on the object itself, and where the `upcase!` method mutates the calling object referenced by `name`.  Hence the value referenced by `name` is permanently modified to `BOB`. 
+
+This explains why when we invoke the `name` method on the object referenced by `bob` on `line 16`, it outputs the String `"BOB"` .
+
+<br />
+<hr />
+
+## Ex #16
+> Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
+
+see: https://launchschool.com/posts/1d26e504
+
+<br />
+<hr />
+
+# Ex #17
+> Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`
+
+One example where it makes sense to write a custom getter method over `attr_reader` is when we may not want to display the raw data, such as password, phone number, or social security number, but perhaps only display partial information.  In this case we can define our custom method instead.
+
+```ruby
+class Person
+  def initialize(name, phone_number)
+    @name = name
+    @phone_number = phone_number
+  end
+
+  def phone_number
+    @phone_number[-4..-1]
+  end
+end
+
+bob = Person.new("Bob","9999876543")
+p bob.phone_number 
+```
+
+<br />
+<hr />
+
+# Ex 18
+```ruby
+class Shape
+  @@sides = nil
+
+  def self.sides
+    @@sides
+  end
+
+  def sides
+    @@sides
+  end
+end
+
+class Triangle < Shape
+  def initialize
+    @@sides = 3
+  end
+end
+
+class Quadrilateral < Shape
+  def initialize
+    @@sides = 4
+  end
+end
+```
+> What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
+
+`Triangle.sides` returns  `nil`
+`Triangle.new.sides` returns `3`
+
+This code demonstrates that class variables are accessible by the subclass where the subclass is allowed to override the class variable in a super-class. The change to the class variable will affect all other subclasses of the superclass.
+
+This also demonstrates that when a class variable is initialized in a class, there is no method to explicitly invoke to initialize it. The class variable is loaded when the class is evaluated by Ruby. 
+
+However, when a class variable is intialized or reassigned within an class method or instance method, the class method or instance method must be invoked in order for the value of the class variable to be set to a new value.
+
+see additional examples below
+```ruby
+# Example 1
+class Person
+  @@name = "Bob"
+  
+  def self.some_class_method
+    @@name
+  end
+    
+  def some_instance_method
+    @@name = "Tom"
+  end
+  
+  def self.some_other_class_method
+    @@name = "Mary"
+  end
+
+end
+
+p Person.some_class_method # => "Bob"
+p Person.new.some_instance_method # => "Tom"
+p Person.some_other_class_method # => "Mary"
+
+
+# Example 2
+class Person
+  
+  def self.some_class_method
+    @@name = "Bob"
+  end
+  
+  def some_instance_method
+    @@name
+  end
+
+end
+
+# run this line seperate from bottom two
+p Person.new.some_instance_method # => raises an error
+
+p Person.some_class_method # => "Bob"
+p Person.new.some_instance_method # => "Bob"
+
+
+# Example 3
+class Person
+    
+  def some_instance_method
+    @@name = "Tom"
+  end
+  
+  def self.some_class_method
+    @@name
+  end
+
+end
+
+# run this line sepearte from bottom two
+p Person.some_class_method # => raises an error
+
+p Person.new.some_instance_method # => "Tom"
+p Person.some_class_method # => "Tome"
+```
+
+<br />
+<hr />
+
+# Ex 19
+> What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
+
+The `attr_accessor` method is Ruby's built-in way to automatically create both `getter` and `setter` methods which allow us to access and set the values of intance variables. 
+
+There are times when we may only want the user to view certain information without having the ability to modify it, in this case we may only want to create an `attr_reader` for an instance variable.  Likewise, there are times when we may only want the user to be able to modify the data but need to present the that data in different format. In this case we may want to create an `attr_writer` for an instance variable and a custom method to expose the data.
+
+Additional possibly unecessary info:
+Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and the properties that users of the object need. We can use Method Access Control to hide or expose the properties and methods through the public interface of a class.  
+
+Classes should have as few public methods as possible to help protect our data from unwanted changes or manipulation. Creating only the neceessary methods simplifies using a class and reduces the need for having to figure out which methods to hide and which to expose. 
+
+```ruby
+# Use case example of when using attr_accessor is not always necessary.
+class Person
+  
+  attr_reader :race
+  attr_writer :name
+  attr_accessor :title
+
+  def initialize(title, name, race)
+    @title = title
+    @name = name
+    @race = race
+  end
+  
+  def name
+    "#{title} #{@name}"
+  end
+  
+end
+
+jane = Person.new("Ms", "Jane Smith ", "White")
+puts jane.name
+jane.title = "Mrs"
+jane.name = "Jane Jones" 
+puts jane.name
+puts jane.race
+```
+
+In this example the `race` attribute is not something that will change, in this case, it does not make sense to add the ability to update the value of this attribute once it has been set.  `name` however can change, but perhaps we may want to create a custom method for displaying the information such as including the `title`.
+
+<br />
+<hr />
+
+# Ex 20
+> What is the difference between states and behaviors?
+
+In Ruby we define the attributes and behaviors for objects in classes. `state` tracks attributes for individual objects which represent what an object is made of. Behaviors is what an object can do. Classes group common behavior and objects encapsulate `state`. As such, all objects of a class have the same behavior but different `state`.
+
+Each object has a unique `state` which is comprised of the instance variables and their values.  The behaviors of an object are defined by the instance methods that can be called or invoked on the object and which the object can respond to.
+
+Resources:
+https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects
+https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#statesandbehaviors
+https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
+
+<br />
+<hr />
+
+# Ex 21 
+> What is the difference between instance methods and class methods?
+
+Here are some differences between `instance methods` and `class methods`
+
+`instance methods` are methods that are called on an instance of a class. We can use instance methods to `set` or `expose` information about the `state` of an object. Instance methods is how we define the behaviors in a class that describe what an object can do. We use instance methods to define functionality that pertains to individual objects.
+
+```ruby
+# example of class with instance methods
+class Customer
+  def initialize(name)
+    @name = name
+  end
+  
+  def greeting
+    puts "Good day #{@name}"
+  end
+end
+  
+bob = Customer.new("Bob")
+bob.greeting 
+```
+
+`class methods` are methods that we can call on the class directly without having to instantiate any objects.  This is because class methods belong to the class itself. We use class methods to define functionality that does not  pertain to individual objects 
+
+Unlike instance methods, class methods must be prepended with the `self` keyword in front of the method name.
+
+```ruby
+class Customer
+  def self.who_am_i
+    puts "I am a class method"
+  end
+end
+
+Customer.who_am_i
+```
+
+<br />
+<hr />
+
+# Ex 22
+<a name="ex22"></a>
+
+> What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
+
+Collaborator objects are objects that are stored as state within another object. Collaborator objects can be of any data type and in fact an example of ones we've already used are when we initialize instance variables for our objects to string or numbers such as, `@name = "Bob"`. 
+
+More often however, when we work with collaborator objects, they are usually custom objects.  You can think of the relationship between collaborator objects as that of `association` as in `has-a` relationship.  For example, a purchase order `has-a` item. See example below:
+
+
+```ruby
+class PurchaseOrder
+  def initialize(id)
+    @id = id
+    @items = []
+  end
+
+  def <<(item)
+    @items << item
+  end
+  
+  def display_items
+    puts "The items for order #{@id} are:"
+    puts @items
+    puts 
+  end
+end
+
+class Item 
+  def initialize(name)
+    @name = name
+  end
+  
+  def to_s
+    "#{@name}"
+  end
+end
+
+purchase_order_1 = PurchaseOrder.new(1)
+shoes = Item.new("shoes")
+shirt = Item.new("shirt") 
+purchase_order_1 << shoes << shirt
+puts purchase_order_1.display_items
+```
+
+Resources:
+https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
+https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4
