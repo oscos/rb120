@@ -15,12 +15,35 @@
 ### Completed Problems:
 | Exercise | Description |
 | --- | ----------- |
-| [Excercise 22](#ex22) |
+| [Exercise 1](#ex1) | Instance Variables (`nil`) vs Local Variables (error) |
+| [Exercise 2](#ex2) | Instance Variables  (invoke method to initialize) |
+| [Exercise 3](#ex3) | Costants have lexical scope |
+| [Exercise 4](#ex4) | Adding objects together returns same object type. |
+| [Exercise 5](#ex5) | prepend `setter` with `self` |
+| [Exercise 6](#ex6) | prepend `setter` with `self` (variable shadowing) |
+| [Exercise 7](#ex7) | class variables can be mod by subclasses |
+| [Exercise 8](#ex8) | `super`  without explicit args (forwards) |
+| [Exercise 9](#ex9) | `super` without explicit args (error)  |
+| [Exercise 10](#ex10) | method lookup path (CM-OKBO) |
+| [Exercise 11](#ex11) | polymorphism - class inheritance |
+| [Exercise 12](#ex12) | collaborator objects |
+| [Exercise 13](#ex13) | override unitialized var (`"nil"` => "" ) |
+| [Exercise 14](#ex14) | `==` method is fake operator (compares object) |
+| [Exercise 15](#ex15) | output object only invokes `to_s` |
+| [Exercise 16](#ex16) | invoke `setter` vs instance variable |
+| [Exercise 17](#ex17) | invoke `getter` vs `attr_reader` |
+| [Exercise 18](#ex18) | class variables when inside instance method must be invoked |
+| [Exercise 19](#ex19) | `attr_accessor` not always needed  |
+| [Exercise 20](#ex20) | `state` vs behavior |
+| [Exercise 21](#ex21) | class methods vs instance method |
+| [Exercise 22](#ex22) | collaborator objects |
 
 <br />
 <hr />
 
-## Ex #1
+## Exercise #1
+> What is output and why? What does this demonstrate about instance variables that differentiates them from local variables?
+
 ```ruby
 class Person
   attr_reader :name
@@ -33,7 +56,6 @@ end
 bob = Person.new
 p bob.name
 ``` 
-> What is output and why? What does this demonstrate about instance variables that differentiates them from local variables?
 
 This code demonstrates a distinction between referencing local variables and instance variables. While referencing an uninitialized local variable raises a `NameError` error, referencing an uninitialized instance variable returns `nil`.
 
@@ -46,7 +68,9 @@ To initialize an instance variable, we must first call the method that initializ
 <br />
 <hr />
 
-## Ex #2
+## <a name="ex2">Exercise 2</a>
+> What is output and why? What does this demonstrate about instance variables?
+
 ```ruby
 module Swim
   def enable_swimming
@@ -65,7 +89,6 @@ end
 teddy = Dog.new
 p teddy.swim
 ```
-> What is output and why? What does this demonstrate about instance variables?
 
 This code demonstrates a distinction between referencing local variables and instance variables. Referencing an uninitialized instance variable returns `nil`. However referencing an uninitialized local variable raises a `NameError` error instead.
 
@@ -80,7 +103,9 @@ Since uninitialized instance variables return `nil`, `@can_swim` returns `nil` w
 <br />
 <hr />
 
-## Ex #3
+## <a name="ex3">Exercise 3</a>
+> What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above
+
 ```ruby
 module Describable
   def describe_shape
@@ -110,7 +135,6 @@ p Square.sides  # Square < Quadrilateral (Constant) < Shape ()
 p Square.new.sides 
 p Square.new.describe_shape 
 ```
-> What is output and why? What does this demonstrate about constant scope? What does `self` refer to in each of the 3 methods above
 
 This code demonstrates that constants have lexical scope. It also demonstrates that a constant initialized in a superclass is inherited by the subclass, and can be accessed by both class methods and instance methods.
 
@@ -130,7 +154,9 @@ On `line 27`, we invoke the `describe_shape` instance method on a `Square` objec
 <br />
 <hr />
 
-## Ex #4
+## <a name="ex4">Exercise 4</a>
+> What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
+
 ```ruby
 class AnimalClass
   attr_accessor :name, :animals
@@ -171,7 +197,6 @@ some_animal_classes = mammals + birds
 
 p some_animal_classes 
 ```
-> What is output? Is this what we would expect when using `AnimalClass#+`? If not, how could we adjust the implementation of `AnimalClass#+` to be more in line with what we'd expect the method to return?
 
 This code outputs an array of `Animal` objects which is not what we would expect when using the `AnimalClass#+`.
 
@@ -198,7 +223,9 @@ end
 <br />
 <hr />
 
-## Ex #5
+## <a name="ex5">Exercise 5</a>
+> We expect the code above to output `"Spartacus weighs 45 lbs and is 24 inches tall."  Why does our `change_info` method not work as expected?
+
 ```ruby
 class GoodDog
   attr_accessor :name, :height, :weight
@@ -225,7 +252,6 @@ sparky.change_info('Spartacus', '24 inches', '45 lbs')
 puts sparky.info 
 # => Spartacus weighs 10 lbs and is 12 inches tall.
 ```
-> We expect the code above to output `"Spartacus weighs 45 lbs and is 24 inches tall."  Why does our `change_info` method not work as expected?
 
 This code demonstrates that `setter` methods must be prepended with `self` to help Ruby disambiguate between invoking a `setter` method and initializing a local variable.
 
@@ -256,7 +282,9 @@ end
 <br />
 <hr />
 
-## Ex #6
+## <a name="ex6">Exercise 6</a>
+> In this code , we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
+
 ```ruby
 class Person
   attr_accessor :name
@@ -275,7 +303,6 @@ p bob.name
 bob.change_name
 p bob.name
 ```
-> In the code above, we hope to output `'BOB'` on `line 16`. Instead, we raise an error. Why? How could we adjust this code to output `'BOB'`? 
 
 This code demonstrates that `setter` methods must be prepended with `self` to help Ruby disambiguate between invoking a `setter` method and initializing a local variable.
 
@@ -306,7 +333,7 @@ end
 <br />
 <hr />
 
-## Ex #7
+## <a name="ex7">Exercise 7</a>
 ```ruby
 class Vehicle
   @@wheels = 4
@@ -348,7 +375,9 @@ It's also why when on `line 22` we invoke the `wheels` class method on the `Car`
 <br />
 <hr />
 
-## Ex #8
+## <a name="ex8">Exercise 8</a>
+> What is output and why? What does this demonstrate about `super`?
+
 ```ruby
 class Animal
   attr_accessor :name
@@ -368,7 +397,6 @@ end
 bruno = GoodDog.new("brown")       
 p bruno
 ```
-> What is output and why? What does this demonstrate about `super`?
 
 This code demonstrates how calling `super` with no explicit arguments works.  `super` is a keyword that invokes a method earlier on in the method lookup path that has the same name as the method it is called from.  When `super` is called with no explicit arguments (no parentheses), it passes along any arguments passed to the method in which it is called, over to the method with the same name in the superclass .
 
@@ -379,7 +407,9 @@ However, within the initialize method in the `GoodDog` subclass, `super` is call
 <br />
 <hr />
 
-## Ex #9
+## <a name="ex9">Exercise 9</a>
+> What is output and why? What does this demonstrate about `super`? 
+
 ```ruby
 class Animal
   def initialize
@@ -395,7 +425,6 @@ end
 
 bear = Bear.new("black")        
 ```
-> What is output and why? What does this demonstrate about `super`? 
 
 This code demonstrates how calling `super` with no explicit arguments works.  `super` is a keyword that invokes a method earlier on in the method lookup path that has the same name as the method it is called from.  When `super` is called with no explicit arguments (no parentheses), it passes along any arguments passed to the method in which it is called, over to the method with the same name in the superclass .
   
@@ -406,7 +435,9 @@ However within the `initialize` method of the `Bear` subclass, we call `super` w
 <br />
 <hr />
 
-## Ex #10
+## <a name="ex10">Exercise 10</a>
+> What is the method lookup path used when invoking `#walk` on `good_dog`?
+
 ```ruby
 module Walkable
   def walk
@@ -454,9 +485,6 @@ end
 good_dog = GoodAnimals::GoodDog.new
 p good_dog.walk
 ```
-> What is the method lookup path used when invoking `#walk` on `good_dog`?
-
-within the Animal namespace From Natalie
 
 This code demonstrates how Ruby traverses through the method lookup path whenever a method is invoked.  The method lookup path is the distinct path that ruby follows whenever a method is invoked.
 
@@ -469,7 +497,9 @@ In this example, we are using a module for namespacing where we group related cl
 <br />
 <hr />
 
-## Ex #11
+## <a name="ex11">Exercise 11</a>
+> What is the method lookup path used when invoking `#walk` on `good_dog`?
+
 ```ruby
 class Animal
   def eat
@@ -511,7 +541,9 @@ Even though every object in the `array_of_animals` array is a different object t
 <br />
 <hr />
 
-## Ex #12
+## <a name="ex12">Exercise 12</a>
+> We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object?
+
 ```ruby
 class Person
   attr_accessor :name, :pets
@@ -542,7 +574,6 @@ bob.pets << bud
 
 bob.pets.jump 
 ```
-> We raise an error in the code above. Why? What do `kitty` and `bud` represent in relation to our `Person` object?
 
 This code raises an error because on `line 28`, `pets` references an array containing the collaborator objects referenced by `kitty` and `bud`, and since the `Array` class does not have a `jump` method, Ruby raises an error.  
 
@@ -558,7 +589,9 @@ code modified to:
 <br />
 <hr />
 
-## Ex #13
+## <a name="ex13">Exercise 13</a>
+> What is output and why?
+
 ```ruby
 class Animal
   def initialize(name)
@@ -577,8 +610,6 @@ end
 teddy = Dog.new("Teddy")
 puts teddy.dog_name   
 ```
-> What is output and why?
-
 
 In this example we define an `Animal` class with an initialize method that takes one `name` argument that assigned to the `@name` instance variable.  We also define a `Dog` class that is a subclass to the `Animal` superclass.  `Dog` class inherits the `intialize` method from `Animal` and overrides it.  However the value of the `name` argument within the `Dog#initialize` method is never assigned to an `@name` instance variable.  Hence when on `line 11`, we reference the `@name` instance variable within the `dog_name` method, `@name` is uninitialized and returns `nil`. 
 
@@ -587,7 +618,9 @@ This is why on line When we invoke the `dog_name` on the `Dog` object referenced
 <br />
 <hr />
 
-## Ex #14
+## <a name="ex14">Exercise 14</a>
+> In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
+
 ```ruby
 class Person
   attr_reader :name
@@ -601,7 +634,6 @@ al = Person.new('Alexander')
 alex = Person.new('Alexander')
 p al == alex # => true
 ```
-> In the code above, we want to compare whether the two objects have the same name. `Line 11` currently returns `false`. How could we return `true` on `line 11`? 
 
 In this example rather than compare the `state` of the objects we are comparing the objects themselves. For `line 11` to evaluate to `true`, we can define a custom `==` comparison operator within `Person`, that compares the values that `@name` instance variable references.
   
@@ -625,7 +657,9 @@ p alex.name.object_id
 <br />
 <hr />
 
-## Ex #15
+## <a name="ex15">Exercise 15</a>
+>What is output on `lines 14, 15, and 16` and why?
+
 ```ruby
 class Person
   attr_reader :name
@@ -644,7 +678,6 @@ puts bob.name
 puts bob      
 puts bob.name 
 ```
->What is output on `lines 14, 15, and 16` and why?
 
 On `line 13` we invoke the `::new` class method on `Person` class which instantiates a new `Person` object and passes the string `Bob` as an argument to the initialize method, where it's used to initialize the `@name` instance variable. This new object is assigned to the local variable `bob`.
 
@@ -657,7 +690,7 @@ This explains why when we invoke the `name` method on the object referenced by `
 <br />
 <hr />
 
-## Ex #16
+## <a name="ex16">Exercise 16</a>
 > Why is it generally safer to invoke a setter method (if available) vs. referencing the instance variable directly when trying to set an instance variable within the class? Give an example.
 
 see: https://launchschool.com/posts/1d26e504
@@ -665,7 +698,7 @@ see: https://launchschool.com/posts/1d26e504
 <br />
 <hr />
 
-# Ex #17
+## <a name="ex17">Exercise 17</a>
 > Give an example of when it would make sense to manually write a custom getter method vs. using `attr_reader`
 
 One example where it makes sense to write a custom getter method over `attr_reader` is when we may not want to display the raw data, such as password, phone number, or social security number, but perhaps only display partial information.  In this case we can define our custom method instead.
@@ -689,7 +722,9 @@ p bob.phone_number
 <br />
 <hr />
 
-# Ex 18
+## <a name="ex18">Exercise 18</a>
+> What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
+
 ```ruby
 class Shape
   @@sides = nil
@@ -715,7 +750,6 @@ class Quadrilateral < Shape
   end
 end
 ```
-> What can executing `Triangle.sides` return? What can executing `Triangle.new.sides` return? What does this demonstrate about class variables?
 
 `Triangle.sides` returns  `nil`
 `Triangle.new.sides` returns `3`
@@ -794,7 +828,7 @@ p Person.some_class_method # => "Tome"
 <br />
 <hr />
 
-# Ex 19
+## <a name="ex19">Exercise 19</a>
 > What is the `attr_accessor` method, and why wouldn’t we want to just add `attr_accessor` methods for every instance variable in our class? Give an example.
 
 The `attr_accessor` method is Ruby's built-in way to automatically create both `getter` and `setter` methods which allow us to access and set the values of intance variables. 
@@ -839,7 +873,7 @@ In this example the `race` attribute is not something that will change, in this 
 <br />
 <hr />
 
-# Ex 20
+## <a name="ex20">Exercise 20</a>
 > What is the difference between states and behaviors?
 
 In Ruby we define the attributes and behaviors for objects in classes. `state` tracks attributes for individual objects which represent what an object is made of. Behaviors is what an object can do. Classes group common behavior and objects encapsulate `state`. As such, all objects of a class have the same behavior but different `state`.
@@ -854,7 +888,7 @@ https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
 <br />
 <hr />
 
-# Ex 21 
+## <a name="ex21">Exercise 21</a> 
 > What is the difference between instance methods and class methods?
 
 Here are some differences between `instance methods` and `class methods`
@@ -894,8 +928,8 @@ Customer.who_am_i
 <br />
 <hr />
 
-# Ex 22
-<a name="ex22"></a>
+
+## <a name="ex22">Exercise 22</a>
 
 > What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
 
