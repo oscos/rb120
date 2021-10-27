@@ -1252,8 +1252,10 @@ TODO: Why is it different than the code above?
 <br />
 <hr />
 
-## <a name="ex28Part2">Exercise 28 Part2</a>
+## <a name="ex29">Exercise 29</a>
 > When does accidental method overriding occur, and why? Give an example.
+
+
 
 
 
