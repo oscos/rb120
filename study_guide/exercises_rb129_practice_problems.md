@@ -37,7 +37,10 @@
 | [Exercise 20](#ex20) | `state` vs behavior |
 | [Exercise 21](#ex21) | class methods vs instance method |
 | [Exercise 22](#ex22) | collaborator objects |
-
+| [Exercise 23](#ex23) | fake operators |
+| [Exercise 24](#ex24) | use cases for `self` |
+| [Exercise 25](#ex25) | instance variables |
+| [Exercise 26](#ex26) | instance variable scope via class inheritance and mixins |
 <br />
 <hr />
 
@@ -928,7 +931,6 @@ Customer.who_am_i
 <br />
 <hr />
 
-
 ## <a name="ex22">Exercise 22</a>
 
 > What are collaborator objects, and what is the purpose of using them in OOP? Give an example of how we would work with one.
@@ -976,3 +978,179 @@ puts purchase_order_1.display_items
 Resources:
 https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
 https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4
+
+<br />
+<hr />
+
+## <a name="ex23">Exercise 23</a>
+
+> How and why would we implement a fake operator in a custom class? Give an example.
+
+Fake operators are actual methods that only appear or look like operators due to Ruby's syntatical sugar when invoking those methods.  Instead of calling some of these methods normally as `obj.method(arg)`, we can instead invoke  them as `obj method arg`.  An example of this is the the `==` method where instead of using the `2.==(2.0)` we can simply use `2 == 2.0` instead.
+
+<br />
+<hr />
+
+## <a name="ex24">Exercise 24</a>
+
+> What are the use cases for `self` in Ruby, and how does `self` change based on the scope it is used in? Provide examples.
+
+The reserved word `self` is a way of being explicity about what our program is referencing and what our intentions are as far as behavior.
+
+`self` refers to the calling object:
+
+Inside a class and inside an instance method `self` refers to the instance of the class that called the method - the calling object.
+Inside a class and outside an instance method `self` refers to the class itself an can be used to define a class method.
+
+Example of using `self` inside a class but outside an instance method
+```ruby
+class Customer
+  
+  self
+  
+  def self.who_am_i
+    self
+  end
+  
+  def who_am_i
+    self
+  end
+end
+
+puts Customer  # => Customer
+puts Customer.who_am_i # => Customer
+puts Customer.new.who_am_i # => #<Customer:0x000056289f7ce890>
+```
+
+When invoking setter methods from within the class, they must be denoted with the reserved word `self`. This allows ruby to differentiate between initializing a local variable and invoking a setter method.
+
+Example of using `self` as explicit caller with `rename` setter method
+```ruby
+class Customer
+  attr_accessor :name, :rename
+
+  def initialize(name)
+    @name = name
+  end
+  
+  def rename(n)
+    self.name = n
+  end
+end
+
+tom = Customer.new('Tom')
+puts tom.name # => Tom
+tom.rename('Thomas')
+puts tom.name # => Thomas
+```
+
+In this example, within the `rename` instance method, we prepend `self` in front of name. This lets Ruby know that we are invoking the setter method name on the class instance that kitty points to.
+
+<br />
+<hr />
+
+## <a name="ex25">Exercise 25</a>
+
+> What does this code demonstrate about how instance variables are scoped?
+
+```ruby
+class Person
+  def initialize(n)
+    @name = n
+  end
+  
+  def get_name
+    @name
+  end
+end
+
+bob = Person.new('bob')
+joe = Person.new('joe')
+
+puts bob.inspect # => #<Person:0x000055e79be5dea8 @name="bob">
+puts joe.inspect # => #<Person:0x000055e79be5de58 @name="joe">
+
+p bob.get_name # => "bob"
+```
+
+`instance variables` is how we tie data to objects.  In Ruby, objects encapsulate state, and we use instance variables to track the individual object state. Since instance variables are scoped at the object level, they do not cross between objects, even if the objects belong to the same class. Once an instance variable is initialized within an instance method, it can be referenced from any instance method of the class the object is instantiated from, without having to be passed in.  
+
+In this example, we instantiate two objects and assign them individually to the local variables `bob` and `joe`. During instantiation, the `@name` instance variable of the `bob` object is initialized to the string `bob` and the `@name` instance variable of the `joe` object is initialize to the string `joe`,  Since instance variables are scoped at the object level with each object encapsulating its own `state`, the value of the `@name` instance variable in the `bob` object does not cross over to `joe` and vice versa. Thus when we invoke the `get_name` method on the object referenced by `bob`, it can only return the string `"bob"`.
+
+Resources: 
+
+https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#instancevariables
+https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7
+
+## <a name="ex26">Exercise 26</a>
+
+>  How do class inheritance and mixing in modules affect instance variable scope? Give an example?
+
+ In order to be able to reference an instance variable the instance method that initializes the instance variable must be invoked. In the context of variable scope via inheritance and mixing in modules, although instance variables and their values are not inherited, we can still access them from a subclass since the instance methods where they are initialized are in fact inherited.
+
+Example of variable scope via class inheritance 
+```ruby
+class Customer
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+  
+end
+
+bob = Customer.new("Bob")
+puts bob.name
+```
+
+Example of variable scope via mixins
+```ruby
+module Rewardable
+  def has_rewards
+    @rewards = true
+  end
+end
+
+class Customer
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+  
+end
+
+class Member < Customer
+  include Rewardable
+  
+  def use_rewards
+    "Apply rewards towards purchase" if @rewards
+  end
+end
+
+bob = Member.new("Bob")
+bob.has_rewards
+puts bob.use_rewards
+```
+
+https://launchschool.com/lessons/d2f05460/assignments/b8928e96
+https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
