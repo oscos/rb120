@@ -8,9 +8,9 @@
 | --- | ----------- |
 | #3 | Revise the `why?` responses. |
 | #10 | Incomplete. Unsure how to reference a class within a module. |
-| #13 | Incomplete. question on nil string interpolation - nil.to_s. |
 | #16 | See Pete's response.  |
 | #18 | Review for accuracy.  |
+| #28Part2 | Complete the `why?` part.  |
 
 ### Completed Problems:
 | Exercise | Description |
@@ -41,6 +41,9 @@
 | [Exercise 24](#ex24) | use cases for `self` |
 | [Exercise 25](#ex25) | instance variables |
 | [Exercise 26](#ex26) | instance variable scope via class inheritance and mixins |
+| [Exercise 27](#ex27) | encapsulation and public interface |
+| [Exercise 28 Part1](#ex28Part1) | override `to_s` method, puts method |
+| [Exercise 28 Part2](#ex28Part2) | inpsect method |
 <br />
 <hr />
 
@@ -407,6 +410,12 @@ In this example we define a `Animal` class with an initialize method that takes 
     
 However, within the initialize method in the `GoodDog` subclass, `super` is called with no arguments.  `super` passes along the String `brown` referenced by the `color` argument over to the `initialize` method in `Animal` superclass and invokes it. This initializes the `@name` instance variable wtihin the `initialize` method in the `Animal` superclass to the String `brown.` This explains the presence of `@name="brown"` when the `GoodDog` object is instantiated.  The `initialize` method within `GoodDog` subclass proceeds to initialize the `@color` instance variable to the String `brown`.  Thus when we output the `bruno` object, both `@name` and `@color` instance variables are set to `brown`.
 
+Resources:
+
+https://launchschool.com/exercises/6a35145d
+
+https://launchschool.com/books/oo_ruby/read/inheritance#super
+
 <br />
 <hr />
 
@@ -434,6 +443,12 @@ This code demonstrates how calling `super` with no explicit arguments works.  `s
 In this example we define an `Animal` class with an `initialize` method that accepts no arguments.  We also define a `Bear` class that is a subclass to `Animal` that accepts one argument.  The `initialize` method in the `Bear` subclass overrides the `initialize` method that is inherited from the the `Animal` superclass. 
   
 However within the `initialize` method of the `Bear` subclass, we call `super` with no argument. `super` passes along the String `black` referenced by the `color` argument from the `initialize` method within the `Bear` subclass over to the `initialize` method in `Animal` superclass and invokes it. Thus when we instantiate a new object on `line 46`, it raises and `ArgumentError` error because we try to pass an argument to the `initialize` method of the `Animal` class which does not accept and arguments. 
+
+Resources: 
+
+https://launchschool.com/exercises/6a35145d
+
+https://launchschool.com/books/oo_ruby/read/inheritance#super
 
 <br />
 <hr />
@@ -1082,6 +1097,10 @@ Resources:
 https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#instancevariables
 https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7
 
+
+<br />
+<hr />
+
 ## <a name="ex26">Exercise 26</a>
 
 >  How do class inheritance and mixing in modules affect instance variable scope? Give an example?
@@ -1133,21 +1152,108 @@ bob.has_rewards
 puts bob.use_rewards
 ```
 
+Resources:
+
 https://launchschool.com/lessons/d2f05460/assignments/b8928e96
+
 https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1
 
 
+<br />
+<hr />
 
+## <a name="ex27">Exercise 27</a>
 
+> How does encapsulation relate to the public interface of a class?
 
+Encapsulation lets us hide the internal representation of objects from the outside and only expose the methods and properties that the client needs. In Ruby, we achieve encapsulation by creating objects and exposing interfaces to interact with those objects.   
 
+We can implement Method Access Control to qualify methods as public, private or protected which determines what methods and properties are exposed through the public interface of a class.  Note that all instance methods are public by default.
 
+```ruby
+class Person
+  attr_reader :name
 
+  def initialize(name)
+    @name = name
+  end
+end
 
+bob = Person.new("Bob")
+puts bob.name # => Bob
+```
 
+<br />
+<hr />
 
+## <a name="ex28Part1">Exercise 28 Part1</a>
+> What is output and why? How could we output a message of our choice instead?
 
+```ruby
+class GoodDog
+  DOG_YEARS = 7
 
+  attr_accessor :name, :age
+
+  def initialize(n, a)
+    self.name = n
+    self.age  = a * DOG_YEARS
+  end
+end
+
+sparky = GoodDog.new("Sparky", 4)
+puts sparky
+```
+
+This code outputs the object's class name and an encoding of the object id. 
+
+Every class has a `#to_s` method. When we use `puts`, it invokes the `to_s` method for every argument that's passed to it in order to convert the value to a string representation.
+
+Since we do not override the `to_s` method within the `GoodDog` class, it uses the `to_s` method that it inherits which by default prints the object's class and an encoding of the object id.
+
+To print a useful output, we can can overrride the inherited `to_s` method by defining our own within the `Person` class.
+
+| Resources |
+| --- |
+|https://ruby-doc.org/core-3.0.2/Object.html#method-i-to_s
+|https://launchschool.com/exercises/e7ca751c
+|https://launchschool.com/exercises/6a35145d
+
+<br />
+<hr />
+
+## <a name="ex28Part2">Exercise 28 Part2</a>
+> How is the output above different than the output of the code below, and why?
+
+```ruby
+class GoodDog
+  DOG_YEARS = 7
+
+  attr_accessor :name, :age
+
+  def initialize(n, a)
+    @name = n
+    @age  = a * DOG_YEARS
+  end
+end
+
+sparky = GoodDog.new("Sparky", 4)
+p sparky
+```
+
+This code outputs the object's class name, an encoding of its memory address, and a list of the instance variables and their values.
+
+TODO: Why is it different than the code above?
+
+| Resources |
+| --- |
+|https://ruby-doc.org/core-3.0.2/Object.html#method-i-inspect
+
+<br />
+<hr />
+
+## <a name="ex28Part2">Exercise 28 Part2</a>
+> When does accidental method overriding occur, and why? Give an example.
 
 
 
