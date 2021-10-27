@@ -17,7 +17,7 @@
 | --- | ----------- |
 | [Exercise 1](#ex1) | Instance Variables (`nil`) vs Local Variables (error) |
 | [Exercise 2](#ex2) | Instance Variables  (invoke method to initialize) |
-| [Exercise 3](#ex3) | Costants have lexical scope |
+| [Exercise 3](#ex3) | Constants have lexical scope |
 | [Exercise 4](#ex4) | Adding objects together returns same object type. |
 | [Exercise 5](#ex5) | prepend `setter` with `self` |
 | [Exercise 6](#ex6) | prepend `setter` with `self` (variable shadowing) |
@@ -43,7 +43,7 @@
 | [Exercise 26](#ex26) | instance variable scope via class inheritance and mixins |
 | [Exercise 27](#ex27) | encapsulation and public interface |
 | [Exercise 28 Part1](#ex28Part1) | override `to_s` method, puts method |
-| [Exercise 28 Part2](#ex28Part2) | inpsect method |
+| [Exercise 28 Part2](#ex28Part2) | inspect method |
 <br />
 <hr />
 
@@ -1254,6 +1254,9 @@ TODO: Why is it different than the code above?
 
 ## <a name="ex29">Exercise 29</a>
 > When does accidental method overriding occur, and why? Give an example.
+
+Since every class inherently subclasses from the `Object` class, methods defined in the `Object` class are available in all classes. Because inheritance allows us to override a method from a superclass, we can accidently override a method that was defined in the `Object` class. 
+
 
 
 
