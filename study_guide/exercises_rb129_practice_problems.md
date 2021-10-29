@@ -11,6 +11,7 @@
 | #16 | See Pete's response.  |
 | #18 | Review for accuracy.  |
 | #28Part2 | Complete the `why?` part.  |
+| #29 | Accidental Override, explanation completed but finish example  |
 
 ### Completed Problems:
 | Exercise | Description |
@@ -44,6 +45,7 @@
 | [Exercise 27](#ex27) | encapsulation and public interface |
 | [Exercise 28 Part1](#ex28Part1) | override `to_s` method, puts method |
 | [Exercise 28 Part2](#ex28Part2) | inspect method |
+| [Exercise 29](#ex29) | accidental override |
 <br />
 <hr />
 
@@ -851,7 +853,7 @@ p Person.some_class_method # => "Tome"
 
 The `attr_accessor` method is Ruby's built-in way to automatically create both `getter` and `setter` methods which allow us to access and set the values of intance variables. 
 
-There are times when we may only want the user to view certain information without having the ability to modify it, in this case we may only want to create an `attr_reader` for an instance variable.  Likewise, there are times when we may only want the user to be able to modify the data but need to present the that data in different format. In this case we may want to create an `attr_writer` for an instance variable and a custom method to expose the data.
+There are times when we may only want the user to view certain information without having the ability to modify it, in this case we may only want to invoke the `attr_reader` which creates a `getter` method for an instance variable.  Likewise, there are times when we may only want the user to be able to modify the data but need to present the that data in different format. In this case we may want to invoke an `attr_writer` to create a `setter` method for an instance variable and a custom method to expose the data.
 
 Additional possibly unecessary info:
 Encapsulation lets us hide the internal representation of an object from the outside and only expose the methods and the properties that users of the object need. We can use Method Access Control to hide or expose the properties and methods through the public interface of a class.  
@@ -898,10 +900,11 @@ In Ruby we define the attributes and behaviors for objects in classes. `state` t
 
 Each object has a unique `state` which is comprised of the instance variables and their values.  The behaviors of an object are defined by the instance methods that can be called or invoked on the object and which the object can respond to.
 
-Resources:
-https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects
-https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#statesandbehaviors
-https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
+|Resources:
+| --
+|https://launchschool.com/books/oo_ruby/read/the_object_model#whatareobjects
+|https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#statesandbehaviors
+|https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
 
 <br />
 <hr />
@@ -990,9 +993,10 @@ purchase_order_1 << shoes << shirt
 puts purchase_order_1.display_items
 ```
 
-Resources:
-https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
-https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4
+| Resources
+| --- 
+|https://launchschool.com/lessons/dfff5f6b/assignments/4228f149
+|https://medium.com/launch-school/no-object-is-an-island-707e59ffedb4
 
 <br />
 <hr />
@@ -1092,11 +1096,10 @@ p bob.get_name # => "bob"
 
 In this example, we instantiate two objects and assign them individually to the local variables `bob` and `joe`. During instantiation, the `@name` instance variable of the `bob` object is initialized to the string `bob` and the `@name` instance variable of the `joe` object is initialize to the string `joe`,  Since instance variables are scoped at the object level with each object encapsulating its own `state`, the value of the `@name` instance variable in the `bob` object does not cross over to `joe` and vice versa. Thus when we invoke the `get_name` method on the object referenced by `bob`, it can only return the string `"bob"`.
 
-Resources: 
-
-https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#instancevariables
-https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7
-
+| Resources |
+| --- |
+|https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1#instancevariables
+|https://launchschool.com/lessons/d2f05460/assignments/b4f9e5b7
 
 <br />
 <hr />
@@ -1152,12 +1155,10 @@ bob.has_rewards
 puts bob.use_rewards
 ```
 
-Resources:
-
-https://launchschool.com/lessons/d2f05460/assignments/b8928e96
-
-https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1
-
+| Resources |
+| --- |
+|https://launchschool.com/lessons/d2f05460/assignments/b8928e96
+|https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1
 
 <br />
 <hr />
@@ -1168,7 +1169,7 @@ https://launchschool.com/books/oo_ruby/read/classes_and_objects_part1
 
 Encapsulation lets us hide the internal representation of objects from the outside and only expose the methods and properties that the client needs. In Ruby, we achieve encapsulation by creating objects and exposing interfaces to interact with those objects.   
 
-We can implement Method Access Control to qualify methods as public, private or protected which determines what methods and properties are exposed through the public interface of a class.  Note that all instance methods are public by default.
+We can implement Method Access Control to qualify methods as public, private or protected which determines what methods and properties are exposed through the public interface of a class.  Note that with the exception of the `initialize` method, instance methods are public by default.
 
 ```ruby
 class Person
@@ -1255,13 +1256,122 @@ TODO: Why is it different than the code above?
 ## <a name="ex29">Exercise 29</a>
 > When does accidental method overriding occur, and why? Give an example.
 
-Since every class inherently subclasses from the `Object` class, methods defined in the `Object` class are available in all classes. Because inheritance allows us to override a method from a superclass, we can accidently override a method that was defined in the `Object` class. 
+Since every class inherently subclasses from the `Object` class, methods defined in the `Object` class are available in all classes. This means we through inheritance we have access to t Because inheritance allows us to override a method from a superclass, we can accidently override a method that was defined in the `Object` class. 
+
+The `Object#send` method is one example where due to its name, one may accidently override the inherited method if one is not aware the method exists.
+
+```ruby
+  def Email
+    def initialize(sender, recipient, subject, body)
+      @sender = sender
+      @recipient = recipient
+      @subject = subject
+      @body = body
+    end
+
+    def send()
+      # implementation goes her
+    end
+  end
+
+  my_email = Email("bob@gmail.com", "joe@gmail.com", "Greetings", "Hope all is well!")
+  my_email.send(:)
+```
+
+<br />
+<hr />
+
+## <a name="ex29">Exercise 29</a>
+> How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
+
+# Method Access Control
+
+Encapsulation allows us to hide the internal representation of an object, and only expose the necessary methods and properties that the client needs.  By implementing Method Access Control through the use of access modifiers, we can define methods as `public`, `private`, or `protected`. This restricts or allows access to the methods defined in a class.
+
+Methods defined as `public` are accessible both inside and outside the class. They comprise the interface of a class. This means that the class and objects of that class are accessible by other classes and objects. Unless we use the `private` or `protected` access modifiers before a method definition, most methods that we define are public by default.
+
+Methods defined as `private` are only accessible from within the class and only the current instance has access to them. When methods don't need to be accessed outside the class, we can define them as `private` in order to restrict access. As of Ruby 2.7, private methods can be called with a literal `self` as the caller.  The explicit caller is limited to the current object only and not any other object, even if the other object belongs to the same class.
+
+Methods defined as `protected` are accessible within the class just like public methods, however outside the class, they act just like private methods. A notable difference between private and protected methods is protected methods allow access between class instances, while private methods do not. Like private methods we can call protected methods with `self` as an explicit caller. In addition to `self` however, we can also use other objects as the explicit caller, so long as they belong to the same class as the current object.
+
+It's more common to define methods as `public` or `private`. Whenever possible, one should define as few public methods as possible. This ensures that users can access only what's needed to interact with a class or object of a class.
 
 
+Example of a class with a public method
+```ruby
+class Customer
+  attr_accessor :name
+end
 
+customer1 = Customer.new
+customer1.name = "Bob"
+puts customer1.name
+```
+In this example we use `attr_accessor` to automatically create the `name` getter and setter methods. Since these methods are `public` methods, they can be accessed both inside and outside the class.  We use `name` setter method to set the value of `@name` instance variable for the `customer1` object to the string `Bob`, and use the `name` getter method to return and output the value of `@name` for `customer`.
+<hr />
 
+Example of a class with private methods
+```ruby
+class Customer
+  attr_writer :name
 
+  def display_name
+    name
+  end
+  
+  private
+  
+  attr_reader :name
+end
 
+customer1 = Customer.new
+customer1.name = "Bob"
+puts customer1.display_name # => Bob
+# puts customer1.name # => raises a "NoMethodError" error
 
+```
 
+In this example we use the `attr_writer` to automatically create the `name` setter method. Since `name` setter method is a public method, we can invoke it both inside and outside the class. Here we invoke it on `customer1` to set the name of the `customer1` object to to the String `Bob`.
 
+Within the class, we also use the `attr_reader` to automatically create the `name` getter method. However because we've invoke the `private` accessor modifier before the `attr_reader` definition, these methods are private. Thus the `name` getter method can only be accessed within the class.  
+
+However because `display_name` method has been defined inside the class as a public method, and can access the `name` getter method, we use it outside the class to output the value of the `@name` instance variable for the `customer1` object.
+
+<hr />
+
+Example of a class with a protected method.
+```ruby
+  class Customer
+    attr_writer :name
+
+    def ==(other)
+      self.name == other.name
+    end
+
+    protected
+
+    attr_reader :name
+  end
+
+  customer1 = Customer.new
+  customer2 = Customer.new
+
+  customer1.name = "Bob"
+  customer2.name = "Tom"
+
+  puts customer1 == customer2
+```
+
+In this example we use the `attr_writer` to automatically create the `name` setter method. Since `name` setter method is a public method, we can invoke it outside the class. Here we invoke it outside the class on `customer1` to set the name of the `customer1` object to to the String `Bob`. We also invoke it outside the class on `customer2` to set the name of the `customer2` object to to the String `Tom`
+
+Within the class, we use the `attr_reader` to automatically create the `name` getter method. However because we've invoke the `protected` accessor modifier before the `attr_reader` definition, these methods are protected.  This means that the `name` getter method can only be accessed within the class. It does however allow access between class instances.
+
+Here we define the `==` getter method as `public`, and can access the `name` getter method which is `protected`.  We pass `customer2` as an argument into `==` where we compare the values of the `@name` instance variables for `customer1` and `customer2` objects. This returns the boolean `False`, which we use to output.
+
+| Resources |
+| --- |
+|https://launchschool.com/books/oo_ruby/read/inheritance#privateprotectedandpublic
+|https://launchschool.com/exercises/15b002de
+|https://launchschool.com/exercises/acb6e2b2
+|https://launchschool.com/exercises/001419ed
+|https://rubyreferences.github.io/rubychanges/2.7.html
