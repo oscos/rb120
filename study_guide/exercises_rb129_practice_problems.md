@@ -1284,8 +1284,6 @@ The `Object#send` method is one example where due to its name, one may accidentl
 ## <a name="ex30">Exercise 30</a>
 > How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
 
-# Method Access Control
-
 Encapsulation allows us to hide the internal representation of an object, and only expose the necessary methods and properties that the client needs.  By implementing Method Access Control through the use of access modifiers, we can define methods as `public`, `private`, or `protected`. This restricts or allows access to the methods defined in a class.
 
 Methods defined as `public` are accessible both inside and outside the class. They comprise the interface of a class. This means that the class and objects of that class are accessible by other classes and objects. Unless we use the `private` or `protected` access modifiers before a method definition, most methods that we define are public by default.
