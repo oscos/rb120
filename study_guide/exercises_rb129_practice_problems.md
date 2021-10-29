@@ -1281,7 +1281,7 @@ The `Object#send` method is one example where due to its name, one may accidentl
 <br />
 <hr />
 
-## <a name="ex29">Exercise 29</a>
+## <a name="ex30">Exercise 30</a>
 > How is Method Access Control implemented in Ruby? Provide examples of when we would use public, protected, and private access modifiers.
 
 # Method Access Control
@@ -1307,7 +1307,7 @@ customer1 = Customer.new
 customer1.name = "Bob"
 puts customer1.name
 ```
-In this example we use `attr_accessor` to automatically create the `name` getter and setter methods. Since these methods are `public` methods, they can be accessed both inside and outside the class.  We use `name` setter method to set the value of `@name` instance variable for the `customer1` object to the string `Bob`, and use the `name` getter method to return and output the value of `@name` for `customer`.
+In this example we use `attr_accessor` to automatically create the `name` getter and setter methods. Since these methods are `public` methods, they can be accessed both inside and outside the class.  We use `name` setter method to set the value of `@name` instance variable for the `customer1` object to the string `Bob`, and use the `name` getter method to return and output the value of `@name` for `customer1`.
 <hr />
 
 Example of a class with private methods
