@@ -46,6 +46,9 @@
 | [Exercise 28 Part1](#ex28Part1) | override `to_s` method, puts method |
 | [Exercise 28 Part2](#ex28Part2) | inspect method |
 | [Exercise 29](#ex29) | accidental override |
+| [Exercise 30](#ex30) | Method Access Control |
+| [Exercise 31](#ex31) | modules vs class |
+| [Exercise 32](#ex32) | polymporphism types |
 <br />
 <hr />
 
