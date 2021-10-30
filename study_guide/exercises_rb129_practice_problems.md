@@ -1364,7 +1364,7 @@ In this example we use the `attr_writer` to automatically create the `name` sett
 
 Within the class, we use the `attr_reader` to automatically create the `name` getter method. However because we've invoke the `protected` accessor modifier before the `attr_reader` definition, these methods are protected.  This means that the `name` getter method can only be accessed within the class. It does however allow access between class instances.
 
-Here we define the `==` getter method as `public`, and can access the `name` getter method which is `protected`.  We pass `customer2` as an argument into `==` where we compare the values of the `@name` instance variables for `customer1` and `customer2` objects. This returns the boolean `False`, which we use to output.
+Here we define the `==` getter method as `public`, which can access the `name` getter method which is `protected`.  We pass `customer2` as an argument into `==` where we compare the values of the `@name` instance variables for `customer1` and `customer2` objects. This returns the boolean `False`, which we use to output.
 
 | Resources |
 | --- |
@@ -1373,3 +1373,99 @@ Here we define the `==` getter method as `public`, and can access the `name` get
 |https://launchschool.com/exercises/acb6e2b2
 |https://launchschool.com/exercises/001419ed
 |https://rubyreferences.github.io/rubychanges/2.7.html
+
+
+<br />
+<hr />
+
+## <a name="ex31">Exercise 31</a>
+> Describe the distinction between modules and classes
+
+Here are a few distinctions between classes and modules:
+* While you can instantiate objects from a class, you cannot instantiate an object from a module.
+* A class is where we put methods that fall into a hierarchy system. A module is where we place methods that do not fall into a hierarchy system. 
+* A class can inherit but a module can not.
+
+
+<br />
+<hr />
+
+## <a name="ex32">Exercise 32</a>
+What is polymorphism and how can we implement polymorphism in Ruby? Provide examples.
+
+Polymorphism is the ability for objects of different types to respond to the same message or method invocation that can lead to more maintainable code.
+
+Polymorphism is one of the pillars of OOP that helps lead to more maintainable code.  Polymorphism is the ability for objects of different types to respond to the same message or method invocation. What this means in practical terms is that if two objects of different types each have a method with the same name (even if the implementation is different), we can invoke the method name on both objects without worrying about the their type.
+
+There are two primary ways to implement polymorphism:
+* Polymorphism through inheritance
+* Polymorphism through duck typing.
+
+**Example of Polymorphism through Inheritance:**
+```ruby
+class Player
+  def pass
+    puts "Do nothing"
+  end
+end
+
+class BasketballPlayer < Player
+  def pass
+    puts "Throw ball"
+  end
+end
+
+class SoccerPlayer < Player
+  def pass
+    puts "Kick ball"
+  end
+end
+
+class CardPlayer < Player
+end
+
+players = [BasketballPlayer.new, SoccerPlayer.new, CardPlayer.new]
+players.each do |player|
+  player.pass
+end
+```
+
+This code demonstrates polymorphism through inheritance, where the interface for the class hierachy allows objects of different types to respond to the same method invocation even if the method implementaton is different.
+
+Although each object in the `players` array is of a different type, the client code can invoke a `pass` method on each of the different `player` objects because each of those objects has a `pass` method. 
+
+The `BaskeballPlayer` class and a `SoccerPlayer` class both subclass from `Player`. Although both subclasses inherit a `pass` method from the superclass, each subclass overrides the method with their own implementation. Thus when we call `pass` on a `BasketballPlayer` object or `SoccerPlayer` object, the object will use the method defined within its respective class. This is polymporhism through inheritance in which objects of different types can respond to the same message simply by overriding a method from the superclass.
+
+The `CardPlayer` class subclasses from `Player` and it inherits a `pass` method from the superclass. Instead of providing its own implementation for the `pass` method, it uses inheritance to acquire the the behavior of the `Player` superclass. Thus when we call `pass` on a `CardPlayer` object, it will use the inherited method that is defined within the `Player` superclass. This is polymorphism through inheritance in which objects of different types can respond to the same message simply by inheriting a method from the superclass.
+ 
+**Example of Polymorphism through Duck Typing:**
+```ruby
+class Person
+  def run
+    puts "I run on 2 legs"
+  end
+end
+
+class Dog
+  def run
+    puts "I run on 4 legs"
+  end
+end
+
+runners = [Person.new, Dog.new]
+runners.each do |runner|
+    runner.run
+end
+```
+
+This code demonstrates polymorphism through duck typing. With Duck Typing we are not concerned with the object's type or class, instead we only care that the object has the ability to respond to the same method invocation, even if the method implementation is different.
+
+Although each object in the `runners` array is of a different type, the client code can invoke a `run` method on each of the different `runner` objects because each of those objects has a `run` method. 
+
+The `Person` class and the `Dog` class each define their own `run` method with different implementation. Thus when we call `run` on a `Person` object or `Dog` object, the object will use the method defined within its respective class. This is Polymorphism through Duck Typing in which objects of unrelated types can respond to the same method invocation, even if the implementation is different. 
+
+| Resources
+| --
+| https://launchschool.com/lessons/dfff5f6b/assignments/8c6b8604
+| https://launchschool.com/posts/4113bb2d
+| https://launchschool.com/posts/d28ba82d
